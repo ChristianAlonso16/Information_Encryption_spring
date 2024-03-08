@@ -30,16 +30,16 @@ public class UserController {
         String passwordDecrypted =textDecrypt.decrypt(userDTO.getPassword());
 
         if(emailDecrypted!=null && passwordDecrypted!=null){
+            String passwordEncrypted = textDecrypt.encrypt(passwordDecrypted);
             userDTO.setEmail(emailDecrypted);
-            userDTO.setPassword(passwordDecrypted);
+            userDTO.setPassword(passwordEncrypted);
             return userServices.register(userDTO);
         }
         else
         {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "Informacion invalida"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "Error al desencriptar"));
         }
-
     }
 
 }
